@@ -4,7 +4,7 @@ import requests
 
 root = "https://www.google.com/"
 # link = "https://www.google.com/search?q=trump&tbm=nws&sxsrf=ALiCzsah1FJR4Cm8iDhQkT0Rk_ZCqCk2Ug:1665120226714&source=lnt&tbs=qdr:d&sa=X&ved=2ahUKEwiFhPycsM36AhVWTmwGHWb4AIMQpwV6BAgCEBY&biw=1536&bih=714&dpr=1.25"
-link = "https://www.google.com/search?q=formula+1&rlz=1C1RXQR_enIN1015IN1015&biw=1365&bih=961&source=lnt&tbs=sbd%3A1%2Ccdr%3A1%2Ccd_min%3A1%2F1%2F2022%2Ccd_max%3A10%2F8%2F2022&tbm=nws"
+link = "https://www.google.com/search?q=formula+1&tbs=qdr:m,sbd:1&tbm=nws&sxsrf=ALiCzsbQn5ChRntb0NDn6MOaN-tcKiHnYQ:1665210658144&source=lnt&sa=X&ved=2ahUKEwip1ISOgdD6AhUrRmwGHe8JAdIQpwV6BAgBECE&biw=1536&bih=714&dpr=1.25"
 
 def news(link):
     req = Request(link, headers = {'User-Agent':'Chrome/106.0.5249.103'})
@@ -23,6 +23,9 @@ def news(link):
         title = title.replace(',', '')
         description = description.replace(',', '')
 
+        time = ''
+        descript = ''
+
         try:
             time = description.split('...')[1]
             descript = description.split('...')[0]
@@ -35,7 +38,7 @@ def news(link):
         print(link)
         print()
 
-        document = open("data.csv", "a")
+        document = open("~/Codes/Chatbot_News_Summarization/data.csv", "a")
         document.write('{}, {}, {}, {}\n'.format(title, time, descript, link))
         document.close()
         
