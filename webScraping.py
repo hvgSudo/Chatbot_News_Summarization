@@ -10,38 +10,38 @@ def news(link):
     req = Request(link, headers = {'User-Agent':'Chrome/106.0.5249.103'})
     webpage = urlopen(req).read()
 
-    with requests.Session() as c:
-        soup = BeautifulSoup(webpage, 'html5lib')
-        # print(soup)
-        for item in soup.find_all('div', attrs = {'class': 'Gx5Zad fP1Qef xpd EtOod pkphOe'}):
-            raw_link = (item.find('a', href = True)['href'])
-            link = (raw_link.split('/url?q=')[1]).split('&sa=U&')[0]
+    soup = BeautifulSoup(webpage, 'html5lib')
+    # print(soup)
+    for item in soup.find_all('div', attrs = {'class': 'Gx5Zad fP1Qef xpd EtOod pkphOe'}):
+        raw_link = (item.find('a', href = True)['href'])
+        link = (raw_link.split('/url?q=')[1]).split('&sa=U&')[0]
             
-            title = (item.find('div', attrs = {'class': 'BNeawe vvjwJb AP7Wnd'}).get_text())
+        title = (item.find('div', attrs = {'class': 'BNeawe vvjwJb AP7Wnd'}).get_text())
             
-            description = (item.find('div', attrs = {'class': 'BNeawe s3v9rd AP7Wnd'}).get_text())
+        description = (item.find('div', attrs = {'class': 'BNeawe s3v9rd AP7Wnd'}).get_text())
 
-            title = title.replace(',', '')
-            description = description.replace(',', '')
+        title = title.replace(',', '')
+        description = description.replace(',', '')
 
-            try:
-                time = description.split('...')[1]
-                descript = description.split('...')[0]
-            except:
-                pass
+        try:
+            time = description.split('...')[1]
+            descript = description.split('...')[0]
+        except:
+            pass
 
-            print(title)
-            print(time)
-            print(descript)
-            print(link)
-            print()
+        print(title)
+        print(time)
+        print(descript)
+        print(link)
+        print()
 
-            # document = open("data.csv", "a")
-            # document.write('{}, {}, {}, {}\n'.format(title, time, descript, link))
-            # document.close()
-        next = soup.find('a', attrs = {'aria-label': 'Next page'})
-        next = (next['href'])
-        link = root + next
-        news(link)
+        document = open("data.csv", "a")
+        document.write('{}, {}, {}, {}\n'.format(title, time, descript, link))
+        document.close()
+        
+    next = soup.find('a', attrs = {'aria-label': 'Next page'})
+    next = (next['href'])
+    link = root + next
+    news(link)
 
 news(link)
