@@ -1,10 +1,11 @@
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import requests
+import pandas as pd
 
 root = "https://www.google.com/"
-# link = "https://www.google.com/search?q=trump&tbm=nws&sxsrf=ALiCzsah1FJR4Cm8iDhQkT0Rk_ZCqCk2Ug:1665120226714&source=lnt&tbs=qdr:d&sa=X&ved=2ahUKEwiFhPycsM36AhVWTmwGHWb4AIMQpwV6BAgCEBY&biw=1536&bih=714&dpr=1.25"
-link = "https://www.google.com/search?q=formula+1&tbs=qdr:m,sbd:1&tbm=nws&sxsrf=ALiCzsbQn5ChRntb0NDn6MOaN-tcKiHnYQ:1665210658144&source=lnt&sa=X&ved=2ahUKEwip1ISOgdD6AhUrRmwGHe8JAdIQpwV6BAgBECE&biw=1536&bih=714&dpr=1.25"
+links_csv = pd.read_csv('/home/khal-drog0/Codes/Chatbot_News_Summarization/F1_News_Links.csv')
+links_list = links_csv.Link.tolist()
 
 def news(link):
     req = Request(link, headers = {'User-Agent':'Chrome/106.0.5249.103'})
@@ -23,23 +24,13 @@ def news(link):
         title = title.replace(',', '')
         description = description.replace(',', '')
 
-        time = ''
-        descript = ''
-
-        try:
-            time = description.split('...')[1]
-            descript = description.split('...')[0]
-        except:
-            pass
-
         print(title)
-        print(time)
-        print(descript)
+        print(description)
         print(link)
         print()
 
-        document = open("~/Codes/Chatbot_News_Summarization/data.csv", "a")
-        document.write('{}, {}, {}, {}\n'.format(title, time, descript, link))
+        document = open("/home/khal-drog0/Codes/Chatbot_News_Summarization/data.csv", "a")
+        document.write('{}, {}, {}\n'.format(title, description, link))
         document.close()
         
     next = soup.find('a', attrs = {'aria-label': 'Next page'})
@@ -47,4 +38,6 @@ def news(link):
     link = root + next
     news(link)
 
-news(link)
+for link in links_list:
+    news(link)
+# news("https://www.google.com/search?q=formula+1&biw=1536&bih=714&sxsrf=ALiCzsbvymBdrgjICvqbZie0oxvU2wqSWw%3A1665215063826&source=lnt&tbs=cdr%3A1%2Ccd_min%3A2%2F22%2F2022%2Ccd_max%3A2%2F22%2F2022&tbm=nws")
