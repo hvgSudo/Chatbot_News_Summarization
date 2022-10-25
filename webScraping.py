@@ -8,34 +8,35 @@ root = "https://www.google.com/"
 # links_list = links_csv.Link.tolist()
 
 def news(link):
-    req = Request(link, headers = {'User-Agent':'Mozilla/5.0'})
+    req = Request(link, headers = {'User-Agent':'Chrome/106.0.5249.119'})
     webpage = urlopen(req).read()
 
     soup = BeautifulSoup(webpage, 'html5lib')
-    print(soup)
-    # for item in soup.find_all('div', attrs = {'class': 'Gx5Zad fP1Qef xpd EtOod pkphOe'}):
-    #     raw_link = (item.find('a', href = True)['href'])
-    #     link = (raw_link.split('/url?q=')[1]).split('&sa=U&')[0]
+    # print(soup)
+    for item in soup.find_all('div', attrs = {'class': 'Gx5Zad fP1Qef xpd EtOod pkphOe'}):
+        raw_link = (item.find('a', href = True)['href'])
+        link = (raw_link.split('/url?q=')[1]).split('&sa=U&')[0]
             
-    #     title = (item.find('div', attrs = {'class': 'BNeawe vvjwJb AP7Wnd'}).get_text())
+        title = (item.find('div', attrs = {'class': 'BNeawe vvjwJb AP7Wnd'}).get_text())
             
-    #     description = (item.find('div', attrs = {'class': 'BNeawe s3v9rd AP7Wnd'}).get_text())
+        description = (item.find('div', attrs = {'class': 'BNeawe s3v9rd AP7Wnd'}).get_text())
 
-    #     title = title.replace(',', '')
-    #     description = description.replace(',', '')
+        title = title.replace(',', '')
+        description = description.replace(',', '')
 
-    #     print(title)
-    #     print(description)
-    #     print(link)
-    #     print()
+        print(title)
+        print(description)
+        print(link)
+        print()
 
-    #     document = open("/home/khal-drog0/Codes/Chatbot_News_Summarization/data.csv", "a")
-    #     document.write('{}, {}, {}\n'.format(title, description, link))
-    #     document.close()
+        document = open("/home/khal-drog0/Codes/Chatbot_News_Summarization/data.csv", "a")
+        document.write('{}, {}, {}\n'.format(title, description, link))
+        document.close()
       
-    # next = soup.find('a', attrs = {'aria-label': 'Next page'})
-    # next = (next['href'])
-    # link = root + next
+    next = soup.find('a', attrs = {'aria-label': 'Next page'})
+    next = (next['href'])
+    link = root + next
+    news(link)
     # try:
     #     news(link)
     # except:
@@ -45,6 +46,8 @@ def news(link):
 #     news(links_list[i])
 #     i += 1
 
-link = "https://www.google.com/search?q=formula+1&client=firefox-b-d&biw=1536&bih=703&sxsrf=ALiCzsa6Lr0_LgCAqDoiPXy_XgBhjPkk1Q%3A1665991134999&source=lnt&tbs=sbd%3A1%2Ccdr%3A1%2Ccd_min%3A10%2F17%2F2011%2Ccd_max%3A10%2F16%2F2012&tbm=nws"
+link = "https://www.google.com/search?q=formula+1&tbs=cdr:1,cd_min:10/25/2011,cd_max:10/24/2012,sbd:1&tbm=nws&sxsrf=ALiCzsbRfc2_FgFkydvQTCVgRz5_CdWIAQ:1666706048622&source=lnt&sa=X&ved=2ahUKEwij--Pvw_v6AhWbFLcAHQB7Bf0QpwV6BAgCECE&biw=1536&bih=714&dpr=1.25"
 
 news(link)
+
+# link = https://www.google.com/search?q=formula+1&tbs=cdr:1,cd_min:10/25/2013,cd_max:10/24/2014,sbd:1&tbm=nws&sxsrf=ALiCzsbRfc2_FgFkydvQTCVgRz5_CdWIAQ:1666706048622&source=lnt&sa=X&ved=2ahUKEwij--Pvw_v6AhWbFLcAHQB7Bf0QpwV6BAgCECE&biw=1536&bih=714&dpr=1.25
