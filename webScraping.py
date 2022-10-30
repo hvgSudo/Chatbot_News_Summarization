@@ -2,10 +2,24 @@ from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
+from newspaper import Article
+import re
 
 root = "https://www.google.com/"
 # links_csv = pd.read_csv('/home/khal-drog0/Codes/Chatbot_News_Summarization/F1_News_Links.csv')
 # links_list = links_csv.Link.tolist()
+
+def nlp(text_data):
+    no_whitespaces = ' '.join(text_data.split())
+    urls = re.compile(r'https?://\S+|www\.\S+')
+    no_url = urls.sub(r'', no_whitespaces)
+    emojis = re.compile("["
+          u"\U0001F600-\U0001F64F"  # emoticons
+          u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+          u"\U0001F680-\U0001F6FF"  # transport & map symbols
+          u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                            "]+", flags=re.UNICODE)
+    return emojis.sub(r'', no_url)
 
 def news(link):
     req = Request(link, headers = {'User-Agent':'Chrome/106.0.5249.119'})
@@ -18,19 +32,27 @@ def news(link):
         link = (raw_link.split('/url?q=')[1]).split('&sa=U&')[0]
             
         title = (item.find('div', attrs = {'class': 'BNeawe vvjwJb AP7Wnd'}).get_text())
-            
-        description = (item.find('div', attrs = {'class': 'BNeawe s3v9rd AP7Wnd'}).get_text())
 
         title = title.replace(',', '')
-        description = description.replace(',', '')
+        description = ''
+        summary = ''
+        try:
+            article = Article(link)
+            article.download()
+            article.parse()
+            article.nlp()
+            description = nlp(article.text)
+            summary = nlp(article.summary)
+        except:
+            pass
 
         print(title)
-        print(description)
+        print(summary)
         print(link)
         print()
 
         document = open("/home/khal-drog0/Codes/Chatbot_News_Summarization/data.csv", "a")
-        document.write('{}, {}, {}\n'.format(title, description, link))
+        document.write('{}, {}, {}, {}\n'.format(title, link, summary, description))
         document.close()
       
     next = soup.find('a', attrs = {'aria-label': 'Next page'})
