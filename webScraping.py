@@ -13,13 +13,14 @@ def nlp(text_data):
     no_whitespaces = ' '.join(text_data.split())
     urls = re.compile(r'https?://\S+|www\.\S+')
     no_url = urls.sub(r'', no_whitespaces)
+    no_special_characters = re.sub('[^A-Za-z0-9. ]+', '', no_url)
     emojis = re.compile("["
           u"\U0001F600-\U0001F64F"  # emoticons
           u"\U0001F300-\U0001F5FF"  # symbols & pictographs
           u"\U0001F680-\U0001F6FF"  # transport & map symbols
           u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                             "]+", flags=re.UNICODE)
-    return emojis.sub(r'', no_url)
+    return emojis.sub(r'', no_special_characters)
 
 def news(link):
     req = Request(link, headers = {'User-Agent':'Chrome/106.0.5249.119'})
@@ -34,8 +35,8 @@ def news(link):
         title = (item.find('div', attrs = {'class': 'BNeawe vvjwJb AP7Wnd'}).get_text())
 
         title = title.replace(',', '')
-        description = ''
-        summary = ''
+        description = 'a'
+        summary = 'a'
         try:
             article = Article(link)
             article.download()
@@ -46,7 +47,7 @@ def news(link):
         except:
             pass
 
-        print(title)
+        print(nlp(title))
         print(summary)
         print(link)
         print()
@@ -59,16 +60,12 @@ def news(link):
     next = (next['href'])
     link = root + next
     news(link)
-    # try:
-    #     news(link)
-    # except:
-    #     return
 
 # for i in range(len(links_list)):
 #     news(links_list[i])
 #     i += 1
 
-link = "https://www.google.com/search?q=formula+1&tbs=cdr:1,cd_min:10/25/2011,cd_max:10/24/2012,sbd:1&tbm=nws&sxsrf=ALiCzsbRfc2_FgFkydvQTCVgRz5_CdWIAQ:1666706048622&source=lnt&sa=X&ved=2ahUKEwij--Pvw_v6AhWbFLcAHQB7Bf0QpwV6BAgCECE&biw=1536&bih=714&dpr=1.25"
+link = "https://www.google.com/search?q=formula+1&tbs=cdr:1,cd_min:10/25/2014,cd_max:10/24/2015,sbd:1&tbm=nws&sxsrf=ALiCzsbRfc2_FgFkydvQTCVgRz5_CdWIAQ:1666706048622&source=lnt&sa=X&ved=2ahUKEwij--Pvw_v6AhWbFLcAHQB7Bf0QpwV6BAgCECE&biw=1536&bih=714&dpr=1.25"
 
 news(link)
 
