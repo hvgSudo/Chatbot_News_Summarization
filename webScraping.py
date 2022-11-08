@@ -1,13 +1,9 @@
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
-import requests
-import pandas as pd
 from newspaper import Article
 import re
 
 root = "https://www.google.com/"
-# links_csv = pd.read_csv('/home/khal-drog0/Codes/Chatbot_News_Summarization/F1_News_Links.csv')
-# links_list = links_csv.Link.tolist()
 
 def nlp(text_data):
     no_whitespaces = ' '.join(text_data.split())
@@ -61,12 +57,6 @@ def news(link):
     link = root + next
     news(link)
 
-# for i in range(len(links_list)):
-#     news(links_list[i])
-#     i += 1
-
 link = "https://www.google.com/search?q=formula+1&tbs=cdr:1,cd_min:10/25/2014,cd_max:10/24/2015,sbd:1&tbm=nws&sxsrf=ALiCzsbRfc2_FgFkydvQTCVgRz5_CdWIAQ:1666706048622&source=lnt&sa=X&ved=2ahUKEwij--Pvw_v6AhWbFLcAHQB7Bf0QpwV6BAgCECE&biw=1536&bih=714&dpr=1.25"
 
 news(link)
-
-# link = https://www.google.com/search?q=formula+1&tbs=cdr:1,cd_min:10/25/2013,cd_max:10/24/2014,sbd:1&tbm=nws&sxsrf=ALiCzsbRfc2_FgFkydvQTCVgRz5_CdWIAQ:1666706048622&source=lnt&sa=X&ved=2ahUKEwij--Pvw_v6AhWbFLcAHQB7Bf0QpwV6BAgCECE&biw=1536&bih=714&dpr=1.25
