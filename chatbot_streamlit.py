@@ -24,7 +24,7 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 
-st.title("Hello 'Big News' Morgans")
+st.title("Type hello to begin")
 
 def generate_answer():
     tokenizer, data, lbl_encoder, model = get_chatbot()
